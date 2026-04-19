@@ -43,10 +43,9 @@ jobs:
             echo "---updating apt-get update successfull--"
             sudo apt install -y nodejs npm
             sudo npm install
-            sudo chown -R ubuntu:ubuntu /home/ubuntu/demo/testing_git_hub/node_modules
+            sudo chown -R ubuntu:ubuntu "$REPO_DIR"/node_modules
             sudo npm install -g pm2
           else
-            sudo chown -R ubuntu:ubuntu /home/ubuntu/demo/testing_git_hub/node_modules
             echo "Updating repo..."
             cd "$REPO_DIR"
             git fetch origin
@@ -54,7 +53,7 @@ jobs:
             git reset --hard origin/main
             git clean -fd
             sudo npm install
-            sudo chown -R ubuntu:ubuntu /home/ubuntu/demo/testing_git_hub/node_modules
+            sudo chown -R ubuntu:ubuntu "$REPO_DIR"/node_modules
           fi
 
       - name: Setup Node.js
@@ -70,13 +69,17 @@ jobs:
           pm2 reload app --update-env || pm2 reload ecosystem.config.js --update-env 
 
       
-      # - name: validation
-      #   run: |
-      #     set -e
-      #     cd "$REPO_DIR"
-      #     curl http://localhost:3000
-      #     pm2 list
-      #     pm2 logs
+      - name: validation
+        run: |
+          set -e
+          cd "$REPO_DIR"
+          echo "Checking application health..."
+          # API check with timeout + failure on non-200 response
+          curl --fail --silent --show-error --max-time 10 http://localhost:3000
+          echo "PM2 process list:"
+          pm2 list
+          echo "PM2 status details:"
+          pm2 describe all
 
 
 
