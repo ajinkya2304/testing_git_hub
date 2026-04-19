@@ -47,4 +47,10 @@ jobs:
           npm install
           pm2 reload demo-app 
           pm2 start ecosystem.config.js
+
+      - name: verfication app logs
+        run: |
+          pm2 list
+          pm2 logs 
+
           
