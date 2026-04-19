@@ -62,6 +62,7 @@ jobs:
         run: |
           set -e
           cd "$REPO_DIR"
+          sudo chown -R ubuntu:ubuntu /home/ubuntu/demo/testing_git_hub/node_modules
           pm2 restart app --update-env || pm2 start ecosystem.config.js --update-env 
 
       
