@@ -66,7 +66,8 @@ jobs:
         run: |
           set -e
           cd "$REPO_DIR"
-          pm2 reload app --update-env || pm2 reload ecosystem.config.js --update-env 
+          sleep 10
+          sudo pm2 reload app --update-env || pm2 reload ecosystem.config.js --update-env 
 
       
       - name: validation
