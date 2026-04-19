@@ -5,6 +5,10 @@ on:
     branches: [main]
     types: [closed]
 
+concurrency:
+  group: deploy
+  cancel-in-progress: true
+
 env:
   BASE_DIR: /home/ubuntu/demo
   REPO_DIR: /home/ubuntu/demo/testing_git_hub
@@ -12,21 +16,26 @@ env:
 
 jobs:
   deploy:
+    timeout-minutes: 10
     if: github.event.pull_request.merged == true
     runs-on: [self-hosted, qa]
 
     steps:
-      - name: Setup workspace
+      - name: Setup workspace & code
         run: |
           set -e
+
           mkdir -p "$BASE_DIR"
+
+          # Clean only npm cache (optional)
+          if [ -d "/home/ubuntu/.npm" ]; then
+            echo "Cleaning npm cache..."
+            rm -rf /home/ubuntu/.npm/
+          fi
+
           if [ ! -d "$REPO_DIR/.git" ]; then
             echo "Cloning repo..."
             git clone "$REPO_URL" "$REPO_DIR"
-            rm -rf /home/ubuntu/.npm/ /home/ubuntu/.npm/.pm2/
-            sudo apt-get update
-            sudo apt install -y nodejs npm
-            npm install -g pm2
           else
             echo "Updating repo..."
             cd "$REPO_DIR"
@@ -40,15 +49,24 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 18
+          cache: 'npm'
 
-      - name: Install dependencies
+      - name: Install dependencies & start app
         run: |
           set -e
           cd "$REPO_DIR"
-          npm install
-          pm2 start ecosystem.config.js
-          
 
+          echo "Installing dependencies..."
+          npm ci
 
+          echo "Starting application with PM2..."
+          pm2 restart ecosystem.config.js --update-env || pm2 start ecosystem.config.js
 
+      - name: Validation
+        run: |
+          set -e
+          echo "PM2 process list:"
+          pm2 list
 
+          echo "Recent logs:"
+          pm2 logs --lines 50 --nostream
