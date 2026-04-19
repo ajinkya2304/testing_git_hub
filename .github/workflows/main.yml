@@ -27,7 +27,7 @@ jobs:
   deploy:
     timeout-minutes: 10
     if: github.event.pull_request.merged == true
-    runs-on: [self-hosted, qa]
+    runs-on: self-hosted
 
     steps:
       - name: Setup workspace
