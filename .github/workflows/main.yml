@@ -19,9 +19,7 @@ jobs:
       - name: Setup workspace
         run: |
           set -e
-
           mkdir -p "$BASE_DIR"
-
           if [ ! -d "$REPO_DIR/.git" ]; then
             echo "Cloning repo..."
             git clone "$REPO_URL" "$REPO_DIR"
