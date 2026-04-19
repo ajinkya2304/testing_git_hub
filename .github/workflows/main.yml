@@ -41,8 +41,8 @@ jobs:
             echo "---updating apt-get update--"
             sudo apt-get update > /dev/null 2>&1
             echo "---updating apt-get update successfull--"
-            sudo apt install -y nodejs npm
-            sudo npm install
+            sudo apt install -y nodejs npm > /dev/null 2>&1
+            sudo npm install > /dev/null 2>&1
             sudo chown -R ubuntu:ubuntu "$REPO_DIR"/node_modules
             sudo npm install -g pm2
           else
@@ -52,7 +52,7 @@ jobs:
             git checkout -B main origin/main
             git reset --hard origin/main
             git clean -fd
-            sudo npm install
+            sudo npm install > /dev/null 2>&1
             sudo chown -R ubuntu:ubuntu "$REPO_DIR"/node_modules
           fi
 
