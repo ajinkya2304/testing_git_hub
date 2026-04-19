@@ -45,12 +45,14 @@ jobs:
             sudo npm install
             sudo npm install -g pm2
           else
+            sudo chown -R ubuntu:ubuntu /home/ubuntu/demo/testing_git_hub/node_modules
             echo "Updating repo..."
             cd "$REPO_DIR"
             git fetch origin
             git checkout -B main origin/main
             git reset --hard origin/main
             git clean -fd
+            
           fi
 
       - name: Setup Node.js
@@ -62,7 +64,6 @@ jobs:
         run: |
           set -e
           cd "$REPO_DIR"
-          sudo chown -R ubuntu:ubuntu /home/ubuntu/demo/testing_git_hub/node_modules
           pm2 restart app --update-env || pm2 start ecosystem.config.js --update-env 
 
       
