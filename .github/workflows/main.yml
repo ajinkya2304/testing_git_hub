@@ -21,20 +21,20 @@ jobs:
     runs-on: [self-hosted, qa]
 
     steps:
-      - name: Setup workspace & code
+      - name: Setup workspace
         run: |
           set -e
-
           mkdir -p "$BASE_DIR"
-
           if [ ! -d "$REPO_DIR/.git" ]; then
+            if [ -d "/home/ubuntu/.npm" ] || [ -d "/home/ubuntu/.pm2" ]; then
+              echo "Cleaning npm and pm2 cache..."
+             rm -rf /home/ubuntu/.npm/ /home/ubuntu/.pm2/
+            fi
             echo "Cloning repo..."
             git clone "$REPO_URL" "$REPO_DIR"
-            rm -rf /home/ubuntu/.npm
             sudo apt-get update
             sudo apt install -y nodejs npm
             npm install -g pm2
-
           else
             echo "Updating repo..."
             cd "$REPO_DIR"
@@ -48,23 +48,22 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 18
-          
-      - name: Install dependencies & start app
+
+      - name: Install dependencies
         run: |
           set -e
           cd "$REPO_DIR"
-
-          echo "Installing dependencies..."
           npm install
-
-          echo "Starting application with PM2..."
-          pm2 restart ecosystem.config.js --update-env || pm2 start ecosystem.config.js
-
-      - name: Validation
+          pm2 start ecosystem.config.js
+      
+      - name: validation
         run: |
           set -e
-          echo "PM2 process list:"
+          cd "$REPO_DIR"
           pm2 list
+          pm2 logs
 
-          echo "Recent logs:"
-          pm2 logs --lines 50 --nostream
+
+
+
+
