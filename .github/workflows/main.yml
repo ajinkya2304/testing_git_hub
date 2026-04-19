@@ -75,8 +75,7 @@ jobs:
           cd "$REPO_DIR"
           echo "PM2 process list:"
           pm2 list
-          echo "PM2 status details:"
-          pm2 describe all
+          
 
 
 
