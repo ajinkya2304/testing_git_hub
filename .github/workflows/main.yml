@@ -32,7 +32,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd /home/ubuntu/demo
+          cd /home/ubuntu/demo/testing_git_hub
           npm install
+          pm2 start ecosystem.config.js
 
     
