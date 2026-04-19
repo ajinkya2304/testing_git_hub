@@ -43,6 +43,7 @@ jobs:
             echo "---updating apt-get update successfull--"
             sudo apt install -y nodejs npm
             sudo npm install
+            sudo chown -R ubuntu:ubuntu /home/ubuntu/demo/testing_git_hub/node_modules
             sudo npm install -g pm2
           else
             sudo chown -R ubuntu:ubuntu /home/ubuntu/demo/testing_git_hub/node_modules
@@ -52,7 +53,8 @@ jobs:
             git checkout -B main origin/main
             git reset --hard origin/main
             git clean -fd
-            
+            sudo npm install
+            sudo chown -R ubuntu:ubuntu /home/ubuntu/demo/testing_git_hub/node_modules
           fi
 
       - name: Setup Node.js
@@ -65,8 +67,6 @@ jobs:
         run: |
           set -e
           cd "$REPO_DIR"
-          npm install
-          sudo chown -R ubuntu:ubuntu /home/ubuntu/demo/testing_git_hub/node_modules
           pm2 restart app --update-env || pm2 start ecosystem.config.js --update-env 
 
       
