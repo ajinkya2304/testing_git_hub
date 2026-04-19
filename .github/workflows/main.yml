@@ -42,6 +42,8 @@ jobs:
             sudo apt-get update > /dev/null 2>&1
             echo "---updating apt-get update successfull--"
             sudo apt install -y nodejs npm
+            sudo npm install
+            sudo npm install -g pm2
           else
             echo "Updating repo..."
             cd "$REPO_DIR"
@@ -60,8 +62,6 @@ jobs:
         run: |
           set -e
           cd "$REPO_DIR"
-          sudo npm install
-          sudo npm install -g pm2
           pm2 restart app --update-env || pm2 start ecosystem.config.js --update-env 
 
       
