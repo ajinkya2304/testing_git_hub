@@ -46,11 +46,13 @@ jobs:
           cd "$REPO_DIR"
           npm install
           pm2 reload demo-app 
-          pm2 start ecosystem.config.js
 
-      - name: verfication app logs
+      - name: verfication app
         run: |
           pm2 list
           pm2 logs 
+          curl http://localhost:3000
 
-          
+
+
+
