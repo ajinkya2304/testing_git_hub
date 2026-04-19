@@ -28,13 +28,9 @@ jobs:
           mkdir -p "$BASE_DIR"
 
           if [ ! -d "$REPO_DIR/.git" ]; then
-           # Clean only npm cache (optional)
-          if [ -d "/home/ubuntu/.npm" ] || [ -d "/home/ubuntu/.pm2" ]; then
-            echo "Cleaning npm and pm2 cache..."
-            rm -rf /home/ubuntu/.npm/ /home/ubuntu/.pm2/
-          fi
             echo "Cloning repo..."
             git clone "$REPO_URL" "$REPO_DIR"
+            rm -rf /home/ubuntu/.npm
             sudo apt-get update
             sudo apt install -y nodejs npm
             npm install -g pm2
