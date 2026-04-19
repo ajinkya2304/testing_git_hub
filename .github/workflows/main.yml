@@ -64,12 +64,14 @@ jobs:
           cd "$REPO_DIR"
           sudo npm install
           sudo npm install -g pm2
-          pm2 reload demo-app || pm2 start ecosystem.config.js
+          pm2 reload demo-app --update-env || pm2 start ecosystem.config.js --update-env 
+
       
       # - name: validation
       #   run: |
       #     set -e
       #     cd "$REPO_DIR"
+      #     curl http://localhost:3000
       #     pm2 list
       #     pm2 logs
 
