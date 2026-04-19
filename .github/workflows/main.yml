@@ -37,12 +37,16 @@ jobs:
           if [ ! -d "$REPO_DIR/.git" ]; then
             if [ -d "/home/ubuntu/.npm" ] || [ -d "/home/ubuntu/.pm2" ]; then
               echo "Cleaning npm and pm2 cache..."
-             rm -rf /home/ubuntu/.npm/ /home/ubuntu/.pm2/
+              sudo apt remove -y nodejs npm > /dev/null 2>&1
+              sudo rm -rf /home/ubuntu/.npm/ /home/ubuntu/.pm2/
+              echo "Cleaning npm and pm2 cache successfully..."
             fi
             echo "Cloning repo..."
             git clone "$REPO_URL" "$REPO_DIR"
             cd "$REPO_DIR"
-            sudo apt-get update
+            echo "---updating apt-get update--"
+            sudo apt-get update > /dev/null 2>&1
+            echo "---updating apt-get update successfull--"
             sudo apt install -y nodejs npm
           else
             echo "Updating repo..."
