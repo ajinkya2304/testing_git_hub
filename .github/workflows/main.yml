@@ -3,16 +3,16 @@ name: Devops_CI/CD
 on:
   workflow_dispatch:
     # Optional: You can add inputs here if you need to pass variables
-    inputs:
-      environment:
-        description: 'Environment to run against'
-        required: true
-        default: 'qa'
+    # inputs:
+    #   environment:
+    #     description: 'Environment to run against'
+    #     required: true
+    #     default: 'qa'
         
         #this one for automate when main branch marge
-  # pull_request:
-  #   branches: [main]
-  #   types: [closed]
+  pull_request:
+    branches: [main]
+    types: [closed]
 
 concurrency:
   group: deploy
@@ -26,7 +26,7 @@ env:
 jobs:
   deploy:
     timeout-minutes: 10
-    # if: github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true
     runs-on: [self-hosted, qa]
 
     steps:
