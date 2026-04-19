@@ -1,9 +1,18 @@
 name: Devops_CI/CD
 
 on:
-  pull_request:
-    branches: [main]
-    types: [closed]
+  workflow_dispatch:
+    # Optional: You can add inputs here if you need to pass variables
+    inputs:
+      environment:
+        description: 'Environment to run against'
+        required: true
+        default: 'qa'
+        
+        #this one for automate when main branch marge
+  # pull_request:
+  #   branches: [main]
+  #   types: [closed]
 
 concurrency:
   group: deploy
@@ -32,9 +41,9 @@ jobs:
             fi
             echo "Cloning repo..."
             git clone "$REPO_URL" "$REPO_DIR"
+            cd "$REPO_DIR"
             sudo apt-get update
             sudo apt install -y nodejs npm
-           
           else
             echo "Updating repo..."
             cd "$REPO_DIR"
@@ -47,22 +56,22 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
 
-      - name: Install dependencies
-        run: |
-          set -e
-          cd "$REPO_DIR"
-          sudo npm install
-          sudo npm install -g pm2
-          pm2 start ecosystem.config.js
+      # - name: Install dependencies
+      #   run: |
+      #     set -e
+      #     cd "$REPO_DIR"
+      #     sudo npm install
+      #     sudo npm install -g pm2
+      #     pm2 start ecosystem.config.js
       
-      - name: validation
-        run: |
-          set -e
-          cd "$REPO_DIR"
-          pm2 list
-          pm2 logs
+      # - name: validation
+      #   run: |
+      #     set -e
+      #     cd "$REPO_DIR"
+      #     pm2 list
+      #     pm2 logs
 
 
 
