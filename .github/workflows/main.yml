@@ -67,7 +67,7 @@ jobs:
           set -e
           cd "$REPO_DIR"
           sleep 10
-          sudo pm2 restart app --update-env || pm2 restart ecosystem.config.js --update-env 
+          sudo -u ubuntu pm2 restart app --update-env || sudo -u ubuntu pm2 restart ecosystem.config.js --update-env
 
       
       - name: validation
