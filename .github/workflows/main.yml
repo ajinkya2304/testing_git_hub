@@ -35,12 +35,6 @@ jobs:
           set -e
           mkdir -p "$BASE_DIR"
           if [ ! -d "$REPO_DIR/.git" ]; then
-            echo "Cleaning npm and pm2 cache..."
-            sudo apt remove -y nodejs npm > /dev/null 2>&1
-            sudo rm -rf /home/ubuntu/.npm/ 
-            sudo rm -rf /home/ubuntu/.pm2/ 
-            echo "Cleaning npm and pm2 cache successfully..."
-            echo "Cloning repo..."
             git clone "$REPO_URL" "$REPO_DIR"
             cd "$REPO_DIR"
             echo "---updating apt-get update--"
