@@ -44,5 +44,4 @@ jobs:
           set -e
           cd "$REPO_DIR"
           npm install
-
           pm2 reload ecosystem.config.js --update-env || pm2 start ecosystem.config.js
