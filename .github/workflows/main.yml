@@ -1,0 +1,38 @@
+name: Devops_CI/CD
+
+on:
+  pull_request:
+    branches: [main]
+    types: [closed]
+
+jobs:
+  deploy:
+    if: github.event.pull_request.merged == true
+    runs-on: [self-hosted, qa, Linux ]
+
+    steps:
+      - name: Setup workspace
+        run: |
+          mkdir -p /home/ubuntu/runner/app
+          cd /home/ubuntu/demo
+          if [ ! -d ".git" ]; then
+            echo "First time clone"
+            git clone https://github.com/ajinkya2304/testing_git_hub.git
+          else
+            echo "Updating repo"
+            git fetch origin
+            git reset --hard origin/main
+            git clean -fd
+          fi
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: |
+          cd /home/ubuntu/demo
+          npm install
+
+    
