@@ -66,7 +66,7 @@ jobs:
         run: |
           set -e
           cd "$REPO_DIR"
-          sleep 10
+          sleep 3
           sudo -u ubuntu pm2 restart app --update-env || sudo -u ubuntu pm2 restart ecosystem.config.js --update-env
 
       
