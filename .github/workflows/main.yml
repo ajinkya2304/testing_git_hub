@@ -19,6 +19,7 @@ jobs:
             echo "First time clone"
             git clone https://github.com/ajinkya2304/testing_git_hub.git
           else
+            cd /home/ubuntu/demo
             echo "Updating repo"
             git fetch origin
             git reset --hard origin/main
