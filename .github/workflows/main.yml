@@ -1,7 +1,7 @@
 name: Devops_CI/CD
 
 on:
-  workflow_dispatch:
+  # workflow_dispatch:
     # Optional: You can add inputs here if you need to pass variables
     # inputs:
     #   environment:
