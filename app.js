@@ -4,7 +4,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.get("/", (req, res) => {
-  res.send("🚀 Node.js app running with PM2!");
+  res.send("🚀 Node.js app running with PM2! working for learning purpose");
 });
 
 app.get("/health", (req, res) => {
