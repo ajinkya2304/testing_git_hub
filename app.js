@@ -4,7 +4,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.get("/", (req, res) => {
-  res.send("🚀 , Hii Anand your cicd testing is successful ");
+  res.send("🚀 , Hii Anand your cicd testing is successful.now you can deploy your application ");
 });
 
 app.get("/health", (req, res) => {
