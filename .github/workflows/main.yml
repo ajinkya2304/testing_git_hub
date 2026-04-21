@@ -1,7 +1,7 @@
 name: Devops_CI/CD
 
 on:
-  workflow_dispatch:
+  # workflow_dispatch:
     # Optional: You can add inputs here if you need to pass variables
     # inputs:
     #   environment:
@@ -27,7 +27,7 @@ jobs:
   deploy:
     timeout-minutes: 10
     if: github.event.pull_request.merged == true
-    runs-on: [self-hosted, qa]
+    runs-on: self-hosted
 
     steps:
       - name: Setup workspace
@@ -41,8 +41,8 @@ jobs:
             echo "---updating apt-get update--"
             sudo apt-get update > /dev/null 2>&1
             echo "---updating apt-get update successfull--"
-            sudo apt install -y nodejs npm
-            sudo npm install
+            sudo apt install -y nodejs npm > /dev/null 2>&1
+            sudo npm install > /dev/null 2>&1
             sudo chown -R ubuntu:ubuntu "$REPO_DIR"/node_modules
             sudo npm install -g pm2
           else
@@ -52,7 +52,7 @@ jobs:
             git checkout -B main origin/main
             git reset --hard origin/main
             git clean -fd
-            sudo npm install
+            sudo npm install > /dev/null 2>&1
             sudo chown -R ubuntu:ubuntu "$REPO_DIR"/node_modules
           fi
 
@@ -66,7 +66,8 @@ jobs:
         run: |
           set -e
           cd "$REPO_DIR"
-          pm2 reload app --update-env || pm2 reload ecosystem.config.js --update-env 
+          sleep 3
+          sudo -u ubuntu pm2 restart app --update-env || sudo -u ubuntu pm2 restart ecosystem.config.js --update-env
 
       
       - name: validation
