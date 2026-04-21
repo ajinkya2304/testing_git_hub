@@ -4,7 +4,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.get("/", (req, res) => {
-  res.send("🚀 , Hii ajinkya your cicd testing is successful ");
+  res.send("🚀 , Hii vishal your cicd testing is successful ");
 });
 
 app.get("/health", (req, res) => {
